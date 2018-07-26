@@ -1,5 +1,7 @@
 package emergency.applications.speeddialforelderly;
 
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -19,10 +21,15 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import java.util.ArrayList;
 
+public class MainActivity extends AppCompatActivity {
+    public static DBHelper dbHelper;
+    public static SQLiteDatabase db;
+    public static ArrayList<Model> arrayList = new ArrayList<Model>();
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -58,6 +65,10 @@ public class MainActivity extends AppCompatActivity {
 
         mViewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.ViewPagerOnTabSelectedListener(mViewPager));
+
+        dbHelper = new DBHelper(this);
+        db = dbHelper.getWritableDatabase();
+
     }
 
 
@@ -122,5 +133,32 @@ public class MainActivity extends AppCompatActivity {
         public int getCount() {
             return 4;
         }
+    }
+
+    public static void fillArrayList(){
+        Log.d("TAG123", "--- Rows in mytable: ---");
+        Cursor c = db.query("mytable", null, null, null, null, null, null);
+        if (c.moveToFirst()) {
+
+            int idColIndex = c.getColumnIndex("id");
+            int nameColIndex = c.getColumnIndex("name");
+            int phoneColIndex = c.getColumnIndex("phone");
+
+            do {
+                Model model = new Model(c.getString(nameColIndex), c.getString(phoneColIndex));
+                arrayList.add(model);
+                Log.d("TAG123",
+                        "ID = " + c.getInt(idColIndex) +
+                                ", name = " + c.getString(nameColIndex) +
+                                ", phone = " + c.getString(phoneColIndex));
+
+            } while (c.moveToNext());
+        } else
+            Log.d("TAG123", "0 rows");
+        c.close();
+    }
+    public static void clearDatabase(String TABLE_NAME) {
+        String clearDBQuery = "DELETE FROM "+TABLE_NAME;
+        db.execSQL(clearDBQuery);
     }
 }
