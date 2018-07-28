@@ -89,6 +89,7 @@ public class ListViewAdapter extends BaseAdapter {
             public void onClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_CALL);
                 String numberString = "tel:" + modellist.get(i).getPhoneNumber();
+                numberString = numberString.replaceAll("#", Uri.encode("#"));
                 Log.d("phone number", numberString);
                 intent.setData(Uri.parse(numberString));
                 if (ActivityCompat.checkSelfPermission(view.getContext(),
@@ -164,7 +165,7 @@ public class ListViewAdapter extends BaseAdapter {
                     removeItem(i);
                     insertContact(mView, dialog, name, phoneNumb);
                 } else {
-                    Toast.makeText(mContext.getApplicationContext(), "you should input some data", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mContext.getApplicationContext(), "empty field", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -179,7 +180,7 @@ public class ListViewAdapter extends BaseAdapter {
 
         if (name.equals("") || phoneNumb.equals("")) {
             Log.d(this.getClass().getName(), "onClick, name or phone number empty");
-            Toast.makeText(mContext.getApplicationContext(), "empty fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext.getApplicationContext(), "empty field", Toast.LENGTH_SHORT).show();
             return;
         }
         cv.put("name", name);

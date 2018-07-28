@@ -2,8 +2,7 @@ package emergency.applications.speeddialforelderly;
 
 import android.app.AlertDialog;
 import android.content.ContentValues;
-import android.content.DialogInterface;
-import android.content.Intent;
+
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,8 +15,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
 
 import static emergency.applications.speeddialforelderly.MainActivity.arrayList;
 import static emergency.applications.speeddialforelderly.MainActivity.clearDatabase;
@@ -83,7 +80,7 @@ public class TabSpeedDial extends Fragment implements View.OnClickListener {
                     String phoneNumb = mPhone.getText().toString();
                     insertContact(mView, dialog, name, phoneNumb);
                 } else {
-                    Toast.makeText(getContext(), "you should input some data", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "empty field", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -100,7 +97,7 @@ public class TabSpeedDial extends Fragment implements View.OnClickListener {
 
         if (name.equals("") || phoneNumb.equals("")) {
             Log.d(this.getClass().getName(), "onClick, name or phone number empty");
-            Toast.makeText(getContext(), "empty fields", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "empty field", Toast.LENGTH_SHORT).show();
             return;
         }
         cv.put("name", name);

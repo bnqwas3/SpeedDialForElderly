@@ -1,12 +1,20 @@
 package emergency.applications.speeddialforelderly;
 
+import android.Manifest;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class TabDial extends Fragment implements View.OnClickListener{
     TextView tvNumber;
@@ -29,6 +37,8 @@ public class TabDial extends Fragment implements View.OnClickListener{
         Button btn9 = rootView.findViewById(R.id.btn_9);
         Button btnAsterisk = rootView.findViewById(R.id.btn_asterisk);
         Button btnNumbSign = rootView.findViewById(R.id.btn_number_sign);
+        ImageButton btnRemoveLast = rootView.findViewById(R.id.imgb_back);
+        ImageButton btnCall = rootView.findViewById(R.id.ibtn_call_number);
 
         btn0.setOnClickListener(this);
         btn1.setOnClickListener(this);
@@ -42,6 +52,8 @@ public class TabDial extends Fragment implements View.OnClickListener{
         btn9.setOnClickListener(this);
         btnAsterisk.setOnClickListener(this);
         btnNumbSign.setOnClickListener(this);
+        btnRemoveLast.setOnClickListener(this);
+        btnCall.setOnClickListener(this);
 
         return rootView;
     }
@@ -98,6 +110,34 @@ public class TabDial extends Fragment implements View.OnClickListener{
                 number.append('#');
                 tvNumber.setText(number.toString());
                 break;
+            case R.id.imgb_back:
+                if(number.length()>0) {
+                    number.deleteCharAt(number.length() - 1);
+                }
+                tvNumber.setText(number.toString());
+                break;
+            case R.id.ibtn_call_number:
+                if(number.length()>0){
+                    for (int index = 0; index < number.length(); index++) {
+                        if (number.charAt(index) == '#') {
+                            number.deleteCharAt(index);
+                            number.insert(index, Uri.encode("#"));
+                        }
+                    }
+                    Intent intent = new Intent(Intent.ACTION_CALL);
+                    String numberString = "tel:" + number.toString();
+                    Log.d("phone number", numberString);
+                    intent.setData(Uri.parse(numberString));
+                    if (ActivityCompat.checkSelfPermission(view.getContext(),
+                            Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                        Toast.makeText(view.getContext(),"no permission to make call",Toast.LENGTH_SHORT).show();
+                        Log.d(this.getClass().getName(), "no permission to make call");
+                        return;
+                    }
+                    Log.d(this.getClass().getName(), "calling");
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    view.getContext().startActivity(intent);
+                }
         }
     }
 }
