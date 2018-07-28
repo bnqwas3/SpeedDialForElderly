@@ -112,17 +112,13 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position){
                 case 0:
-                    TabSpeedDial tab1 = new TabSpeedDial();
-                    return tab1;
+                    return new TabSpeedDial();
                 case 1:
-                    TabDial tab2 = new TabDial();
-                    return tab2;
+                    return new TabDial();
                 case 2:
-                    TabWhitelist tab3 = new TabWhitelist();
-                    return tab3;
+                    return new TabWhitelist();
                 case 3:
-                    TabAboutUs tab4 = new TabAboutUs();
-                    return tab4;
+                    return new TabAboutUs();
                 default:
                     Log.e(TAG, "section pager adapter error");
                     return null;

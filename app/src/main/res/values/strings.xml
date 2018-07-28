@@ -9,4 +9,6 @@
     <string name="btn_emergency_sms">Emergency SMS notification</string>
     <string name="btn_dial_number">Dial a number</string>
     <string name="btn_add_more">+ ADD MORE</string>
+    <string name="remove">remove</string>
+    <string name="edit">edit</string>
 </resources>
