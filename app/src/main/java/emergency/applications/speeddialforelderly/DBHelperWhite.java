@@ -5,15 +5,15 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class DBHelper extends SQLiteOpenHelper {
-    public DBHelper(Context context) {
-        super(context, "myDB", null, 1);
+public class DBHelperWhite extends SQLiteOpenHelper {
+    public DBHelperWhite(Context context) {
+        super(context, "myDBwhite", null, 1);
     }
     @Override
 
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         Log.d(this.getClass().getName(), "--- onCreate database ---");
-        sqLiteDatabase.execSQL("create table mytable ("
+        sqLiteDatabase.execSQL("create table mytablewhite ("
                 + "id integer primary key autoincrement,"
                 + "name text,"
                 + "phone text" + ");");

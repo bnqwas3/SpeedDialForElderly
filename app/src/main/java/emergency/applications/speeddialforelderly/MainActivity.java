@@ -30,6 +30,9 @@ public class MainActivity extends AppCompatActivity {
     public static DBHelper dbHelper;
     public static SQLiteDatabase db;
     public static ArrayList<Model> arrayList = new ArrayList<Model>();
+    public static DBHelperWhite dbHelperWhite;
+    public static ArrayList<Model> arrayListWhite = new ArrayList<Model>();
+    public static SQLiteDatabase dbWhite;
     /**
      * The {@link android.support.v4.view.PagerAdapter} that will provide
      * fragments for each of the sections. We use a
@@ -68,6 +71,9 @@ public class MainActivity extends AppCompatActivity {
 
         dbHelper = new DBHelper(this);
         db = dbHelper.getWritableDatabase();
+
+        dbHelperWhite = new DBHelperWhite(this);
+        dbWhite = dbHelperWhite.getWritableDatabase();
 
     }
 
@@ -132,6 +138,28 @@ public class MainActivity extends AppCompatActivity {
             return 4;
         }
     }
+    public static void fillArrayListWhite(){
+        Log.d("TAG123", "--- Rows in mytablewhite: ---");
+        Cursor c = dbWhite.query("mytablewhite", null, null, null, null, null, null);
+        if (c.moveToFirst()) {
+
+            int idColIndex = c.getColumnIndex("id");
+            int nameColIndex = c.getColumnIndex("name");
+            int phoneColIndex = c.getColumnIndex("phone");
+
+            do {
+                Model model = new Model(c.getString(nameColIndex), c.getString(phoneColIndex));
+                arrayListWhite.add(model);
+                Log.d("TAG123",
+                        "ID = " + c.getInt(idColIndex) +
+                                ", name = " + c.getString(nameColIndex) +
+                                ", phone = " + c.getString(phoneColIndex));
+
+            } while (c.moveToNext());
+        } else
+            Log.d("TAG123", "0 rows");
+        c.close();
+    }
 
     public static void fillArrayList(){
         Log.d("TAG123", "--- Rows in mytable: ---");
@@ -158,5 +186,10 @@ public class MainActivity extends AppCompatActivity {
     public static void clearDatabase(String TABLE_NAME) {
         String clearDBQuery = "DELETE FROM "+TABLE_NAME;
         db.execSQL(clearDBQuery);
+    }
+
+    public static void clearDatabaseWhite(String TABLE_NAME){
+        String clearDBQuery = "DELETE FROM " + TABLE_NAME;
+        dbWhite.execSQL(clearDBQuery);
     }
 }

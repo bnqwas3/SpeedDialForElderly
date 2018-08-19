@@ -11,4 +11,7 @@
     <string name="btn_add_more">+ ADD MORE</string>
     <string name="remove">remove</string>
     <string name="edit">edit</string>
+    <string name="tv_info_about_sms">This message will be sent to all contacts from your whitelist.</string>
+    <string name="Send">Send</string>
+    <string name="input_your_message">input your message</string>
 </resources>
